@@ -65,9 +65,12 @@ MyPlane.prototype.stop=function(){
 }
 MyPlane.prototype.shoot=function(){
 	setInterval(function(){
-		new Bullet().move();
-	},100)	
+		var bullet=new Bullet();
+		bullet.move();
+		gameEngine.allBullet[bullet.id]=bullet;
+	},200)	
 }
+
 function Bullet(){
 	this.ele=$("<div></div>");
 	this.ele.addClass("bullet");
@@ -76,41 +79,109 @@ function Bullet(){
 		left:parseInt($(".myPlane").css("left"))+46,
 		top:parseInt($(".myPlane").css("top"))-18
     })
+	this.id=Math.random()*1000+"B";
 }
 Bullet.prototype.move=function(){
+	var self=this;
 	this.ele.animate({top:0},500,function(){
 	    this.remove();
+	    delete gameEngine.allBullet[self.id];
 	});
 }
+Bullet.prototype.boom=function(x,y){
+	var bulletBoom=$("<div></div>");
+	bulletBoom.addClass("bulletBoom");
+	bulletBoom.appendTo("#box");
+	bulletBoom.css({
+		left:x,
+		top:y
+	})
+	setInterval(function(){
+		bulletBoom.css("background","url(img/die1.png)");
+	},100)
+}
 
 
-function enemyPlane(){
-		
+
+function SmallPlane(){
+	this.ele=$("<div></div>");
+	this.ele.addClass("smallPlane");
+	this.ele.appendTo("body");
+	this.id=Math.random()*1000+"P";
+	this.hp=1;
 }
-enemyPlane.prototype.add=function(){
-		var x=Math.random();
-		var plane=$("<div></div>");
-		if(x>0.9){
-			plane.addClass("bigPlane");
-			var speed=10000;
-		}else if(x>0.6){
-			plane.addClass("mediumPlane");
-			var speed=8000;
-		}else{
-			plane.addClass("smallPlane");
-			var speed=5000;
-		}
-		
-		plane.appendTo("body");
-		var l=Math.random()*($("#box").width()-plane.width())
-		console.log(plane.width(),plane.height())
-		plane.css({left:l,top:-plane.height()});
-		
-		plane.animate({top:$("#box").height()},speed,function(){
-			 plane.remove();
-		})
-}
-enemyPlane.prototype.start=function(){
+SmallPlane.prototype.move=function(){
 	var self=this;
-	setInterval(function(){self.add()},1000)
+	var l=Math.random()*($("#box").width()-this.ele.width())
+	this.ele.css({left:l,top:-this.ele.height()});
+	this.ele.animate({top:$("#box").height()},3000,function(){
+		 this.remove();
+		 delete gameEngine.allEnemy[self.id];
+	})
 }
+
+function MediumPlane(){
+	SmallPlane.call(this);
+	this.hp=3;
+	this.ele.removeClass().addClass("mediumPlane");
+}
+MediumPlane.prototype=new SmallPlane();
+MediumPlane.prototype.move=function(){
+	var self=this;
+	var l=Math.random()*($("#box").width()-this.ele.width())
+	this.ele.css({left:l,top:-this.ele.height()});
+	this.ele.animate({top:$("#box").height()},6000,function(){
+		 this.remove();
+		 delete gameEngine.allEnemy[self.id];
+	})
+}
+
+function BigPlane(){
+	SmallPlane.call(this);
+	this.hp=6;
+	this.ele.removeClass().addClass("bigPlane");
+}
+BigPlane.prototype=new SmallPlane();
+BigPlane.prototype.move=function(){
+	var self=this;
+	var l=Math.random()*($("#box").width()-this.ele.width())
+	this.ele.css({left:l,top:-this.ele.height()});
+	this.ele.animate({top:$("#box").height()},9000,function(){
+		 this.remove();
+		 delete gameEngine.allEnemy[self.id];
+	})
+}
+
+
+
+
+//enemyPlane.prototype.add=function(){
+//		var x=Math.random();
+//		if(x>0.9){
+//			this.ele.addClass("bigPlane");
+//			var speed=10000;
+//		}else if(x>0.6){
+//			this.ele.addClass("mediumPlane");
+//			var speed=8000;
+//		}else{
+//			this.ele.addClass("smallPlane");
+//			var speed=5000;
+//		}
+//		
+//		this.ele.appendTo("body");
+//		var l=Math.random()*($("#box").width()-this.ele.width())
+//		this.ele.css({left:l,top:-this.ele.height()});
+//		
+//		this.ele.animate({top:$("#box").height()},speed,function(){
+//			 this.remove();
+//		})
+//}
+//enemyPlane.prototype.start=function(){
+//	var self=this;
+//	setInterval(function(){
+//		new enemyPlane().add();
+//	},1000)
+//}
+//enemyPlane.prototype.underAttack=function(){
+//	
+//}

@@ -48,3 +48,9 @@ body{
 	background: url(../img/plain3.png);
 	position: absolute;
 }
+.bulletBoom{
+	width:41px;
+	height:39px;
+	position: absolute;
+	z-index: 10;
+}
