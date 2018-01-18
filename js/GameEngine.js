@@ -47,5 +47,32 @@ var gameEngine = {
 		}
 	},
 	allBullet:{},
-	allEnemy:{}
+	allEnemy:{},
+	crashListening:function(){
+		setInterval(function(){
+		//判断子弹与敌机碰撞
+		for(var k in gameEngine.allBullet){
+		  for(var j in gameEngine.allEnemy){
+			if(gameEngine.isTouch(gameEngine.allEnemy[j].ele,gameEngine.allBullet[k].ele)){
+				gameEngine.allBullet[k].boom();
+				delete gameEngine.allBullet[k];
+				gameEngine.allEnemy[j].hp--;
+				gameEngine.allEnemy[j].boom();
+					
+					}
+				}
+			 }
+		},10)
+		setInterval(function(){
+			//判断本体与敌机碰撞
+			  for(var j in gameEngine.allEnemy){
+				if(gameEngine.isTouch(gameEngine.allEnemy[j].ele,$(".myPlane"))){
+					alert("游戏结束")
+				}
+			  }
+		},10)
+	},
+	showScore:function(){
+		$("#showScore").html("分数："+myPlane.score);
+	}
 }

@@ -2,6 +2,7 @@ function MyPlane(){
 	this.ele=$("<div></div>");
 	this.ele.addClass("myPlane");
 	this.ele.appendTo("#box");
+	this.score=0;
 	this.shoot();
 }
 MyPlane.prototype.start=function(){
@@ -83,21 +84,29 @@ function Bullet(){
 }
 Bullet.prototype.move=function(){
 	var self=this;
-	this.ele.animate({top:0},500,function(){
+	this.ele.animate({top:0},500,"linear",function(){
 	    this.remove();
 	    delete gameEngine.allBullet[self.id];
 	});
 }
-Bullet.prototype.boom=function(x,y){
+Bullet.prototype.boom=function(){
+	var self=this;
 	var bulletBoom=$("<div></div>");
 	bulletBoom.addClass("bulletBoom");
-	bulletBoom.appendTo("#box");
-	bulletBoom.css({
-		left:x,
-		top:y
-	})
-	setInterval(function(){
-		bulletBoom.css("background","url(img/die1.png)");
+	bulletBoom.appendTo(this.ele);
+//	bulletBoom.css({
+//		left:x,
+//		top:y
+//	})
+    this.ele.stop();
+    var count=0;
+	var timer=setInterval(function(){
+		count++;
+		bulletBoom.css("background","url(img/die"+count+".png)");
+		if(count==2){
+			self.ele.remove();
+			clearInterval(timer);
+		}
 	},100)
 }
 
@@ -106,7 +115,7 @@ Bullet.prototype.boom=function(x,y){
 function SmallPlane(){
 	this.ele=$("<div></div>");
 	this.ele.addClass("smallPlane");
-	this.ele.appendTo("body");
+	this.ele.appendTo("#box");
 	this.id=Math.random()*1000+"P";
 	this.hp=1;
 }
@@ -114,10 +123,29 @@ SmallPlane.prototype.move=function(){
 	var self=this;
 	var l=Math.random()*($("#box").width()-this.ele.width())
 	this.ele.css({left:l,top:-this.ele.height()});
-	this.ele.animate({top:$("#box").height()},3000,function(){
+	this.ele.animate({top:$("#box").height()},3000,"linear",function(){
 		 this.remove();
 		 delete gameEngine.allEnemy[self.id];
 	})
+}
+SmallPlane.prototype.boom=function(){
+	var self=this;
+	if(this.hp<=0){
+		var count=0;
+		var timer=setInterval(function(){
+			count++;
+			self.ele.css("background","url(img/plain1_die"+count+".png)");
+			if(count==3){
+				clearInterval(timer);
+			}
+		},100)
+		setTimeout(function(){
+			self.ele.remove();
+		},300)
+		delete gameEngine.allEnemy[this.id];
+		myPlane.score+=10;
+		gameEngine.showScore();
+	}
 }
 
 function MediumPlane(){
@@ -125,15 +153,35 @@ function MediumPlane(){
 	this.hp=3;
 	this.ele.removeClass().addClass("mediumPlane");
 }
-MediumPlane.prototype=new SmallPlane();
+//MediumPlane.prototype=new SmallPlane();
 MediumPlane.prototype.move=function(){
 	var self=this;
 	var l=Math.random()*($("#box").width()-this.ele.width())
 	this.ele.css({left:l,top:-this.ele.height()});
-	this.ele.animate({top:$("#box").height()},6000,function(){
+	this.ele.animate({top:$("#box").height()},6000,"linear",function(){
 		 this.remove();
 		 delete gameEngine.allEnemy[self.id];
 	})
+}
+MediumPlane.prototype.boom=function(){
+	var self=this;
+	if(this.hp<=0){
+		var count=0;
+		var timer=setInterval(function(){
+			count++;
+			self.ele.css("background","url(img/plain2_die"+count+".png)");
+			if(count==4){
+				clearInterval(timer);
+			}
+		},100)
+		setTimeout(function(){
+			self.ele.remove();
+		},400)
+		delete gameEngine.allEnemy[self.id];
+		myPlane.score+=20;
+		gameEngine.showScore();
+	}
+	
 }
 
 function BigPlane(){
@@ -141,17 +189,35 @@ function BigPlane(){
 	this.hp=6;
 	this.ele.removeClass().addClass("bigPlane");
 }
-BigPlane.prototype=new SmallPlane();
+//BigPlane.prototype=new SmallPlane();
 BigPlane.prototype.move=function(){
 	var self=this;
 	var l=Math.random()*($("#box").width()-this.ele.width())
 	this.ele.css({left:l,top:-this.ele.height()});
-	this.ele.animate({top:$("#box").height()},9000,function(){
+	this.ele.animate({top:$("#box").height()},9000,"linear",function(){
 		 this.remove();
 		 delete gameEngine.allEnemy[self.id];
 	})
 }
-
+BigPlane.prototype.boom=function(){
+	var self=this;
+	if(this.hp<=0){
+		var count=0;
+		var timer=setInterval(function(){
+			count++;
+			self.ele.css("background","url(img/plain3_die"+count+".png)");
+			if(count==6){
+				clearInterval(timer);
+			}
+		},100)
+		setTimeout(function(){
+			self.ele.remove();
+		},600)
+		delete gameEngine.allEnemy[self.id];
+		myPlane.score+=30;
+		gameEngine.showScore();
+	}
+}
 
 
 

@@ -14,6 +14,14 @@ body{
 	background-size: 100%;
 	background-position-y: 0;  
 }
+#showScore{
+	width:80px;
+	height:30px;
+	background: white;
+	position: fixed;
+	right:0px;
+	top:0px;
+}
 .myPlane{
 	width:98px;
 	height:122px;
@@ -52,5 +60,7 @@ body{
 	width:41px;
 	height:39px;
 	position: absolute;
+	margin-left:-20px;
+	margin-top:-8px;
 	z-index: 10;
 }

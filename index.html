@@ -7,6 +7,7 @@
 	</head>
 	<body>
 		<div id="box"></div>
+		<div id="showScore"></div>
 	</body>
 </html>
 <script type="text/javascript" src="js/jquery-1.11.1.js" ></script>
@@ -14,32 +15,9 @@
 <script type="text/javascript" src="js/myPlane.js" ></script>
 <script>
 	gameEngine.moveBg();
-	new MyPlane().start();
+	var myPlane=new MyPlane()
+	myPlane.start();
 	gameEngine.addEnemyPlane();
-	setInterval(function(){
-		//判断子弹与敌机碰撞
-		for(var k in gameEngine.allBullet){
-		  for(var j in gameEngine.allEnemy){
-			if(gameEngine.isTouch(gameEngine.allEnemy[j].ele,gameEngine.allBullet[k].ele)){
-				gameEngine.allBullet[k].boom(gameEngine.allBullet[k].ele.css("left"),gameEngine.allBullet[k].ele.css("top"));
-				gameEngine.allBullet[k].ele.remove();
-				delete gameEngine.allBullet[k];
-				gameEngine.allEnemy[j].hp--;
-				if(gameEngine.allEnemy[j].hp==0){
-					gameEngine.allEnemy[j].ele.remove();
-					delete gameEngine.allEnemy[j];
-				}
-			}
-		  }
-	    }
-	},10)
-	setInterval(function(){
-		//判断本体与敌机碰撞
-		  for(var j in gameEngine.allEnemy){
-			if(gameEngine.isTouch(gameEngine.allEnemy[j].ele,$(".myPlane"))){
-				alert("游戏结束")
-			}
-		  }
-	},10)
-	
+	gameEngine.crashListening();
+	gameEngine.showScore();
 </script>
