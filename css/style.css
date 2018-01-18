@@ -21,6 +21,13 @@ body{
 	position: absolute;
 	left:48%;
 	top:80vh;
+	z-index:2;
 }
-
+.bullet{
+	width:7px;
+	height:18px;
+	background: url(../img/bullet.png);
+	position: absolute;
+	x-index:1;
+}
 

@@ -10,7 +10,6 @@ var gameEngine = {
 	moveBg: function() {	
 		var self = this
 		var h=parseInt($("body").css("width"))*853/483;
-		console.log(h)
 		this.ele.animate({"background-position-y":h+"px"}, 10000, "linear", function() {
 			self.ele.css({"background-position-y": "0"})
 			self.moveBg()
