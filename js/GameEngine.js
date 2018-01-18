@@ -7,11 +7,15 @@ var gameEngine = {
 	
 	ele: $("#box"),		
 
-	start: function() {	
+	moveBg: function() {	
 		var self = this
-		this.ele.animate({"background-position-y": "1510px"}, 10000, "linear", function() {
-			self.ele.css({"background-position-y": "0px"})
-			self.start()
+		var h=parseInt($("body").css("width"))*853/483;
+		console.log(h)
+		this.ele.animate({"background-position-y":h+"px"}, 10000, "linear", function() {
+			self.ele.css({"background-position-y": "0"})
+			self.moveBg()
 		})
-	}
+	},
+	
+	start:null
 }
