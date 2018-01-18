@@ -28,6 +28,23 @@ body{
 	height:18px;
 	background: url(../img/bullet.png);
 	position: absolute;
-	x-index:1;
+	z-index:1;
 }
-
+.smallPlane{
+	width:59px;
+	height:36px;
+	background: url(../img/plain1.png);
+	position: absolute;
+}
+.mediumPlane{
+	width:70px;
+	height:92px;
+	background: url(../img/plain2.png);
+	position: absolute;
+}
+.bigPlane{
+	width:165px;
+	height:256px;
+	background: url(../img/plain3.png);
+	position: absolute;
+}
