@@ -86,3 +86,27 @@ body{
 	margin-top:-8px;
 	z-index: 10;
 }
+.linian{
+	width:166px;
+	height:186px;
+	background: url(../img/boss1.png) no-repeat;
+	background-size: cover;
+	position: absolute;
+}
+.bossHp{
+	height:20px;
+	line-height: 20px;
+	background: red;
+	position: fixed;
+	top:0;
+	left:30%;
+	border-radius: 5px;
+	opacity: 0.5;
+}
+.haojiao{
+	width:20px;
+	height:20px;
+	background: url(../img/die2.png);
+	background-size:cover;
+	position: absolute;
+}

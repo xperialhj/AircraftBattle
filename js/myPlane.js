@@ -44,6 +44,7 @@ MyPlane.prototype.start=function(){
 				self.move(x,y);
 			}
 		})
+		return this;
 	}
 MyPlane.prototype.move=function(x,y){
 	if(x<0){
@@ -60,16 +61,19 @@ MyPlane.prototype.move=function(x,y){
 		left:x,
 		top:y		
 	})
+	return this;
 }
 MyPlane.prototype.stop=function(){
 	$(document).off("mousemove");
+	return this;
 }
 MyPlane.prototype.shoot=function(){
 	setInterval(function(){
 		var bullet=new Bullet();
 		bullet.move();
 		gameEngine.allBullet[bullet.id]=bullet;
-	},200)	
+	},200)
+	return this;
 }
 MyPlane.prototype.boom=function(){
 	var self=this;
@@ -86,6 +90,7 @@ MyPlane.prototype.boom=function(){
 		alert("游戏结束");
 		location.reload();
 	},500)
+	return this;
 }
 function Bullet(){
 	this.ele=$("<div></div>");
@@ -104,6 +109,7 @@ Bullet.prototype.move=function(){
 	    this.remove();
 	    delete gameEngine.allBullet[self.id];
 	});
+	return this;
 }
 Bullet.prototype.boom=function(){
 	var self=this;
@@ -121,6 +127,7 @@ Bullet.prototype.boom=function(){
 			clearInterval(timer);
 		}
 	},100)
+	return this;
 }
 
 
@@ -142,6 +149,7 @@ SmallPlane.prototype.move=function(){
 		 this.remove();
 		 delete gameEngine.allEnemy[self.id];
 	})
+	return this;
 }
 SmallPlane.prototype.boom=function(){
 	var self=this;
@@ -162,6 +170,7 @@ SmallPlane.prototype.boom=function(){
 		myPlane.score+=1;
 		gameEngine.showScore();
 	}
+	return this;
 }
 
 function MediumPlane(){
@@ -194,7 +203,7 @@ MediumPlane.prototype.boom=function(){
 		myPlane.score+=2;
 		gameEngine.showScore();
 	}
-	
+	return this;
 }
 
 function BigPlane(){
@@ -226,8 +235,75 @@ BigPlane.prototype.boom=function(){
 		myPlane.score+=3;
 		gameEngine.showScore();
 	}
+	return this;
 }
 
+function HaoShen(){
+	this.ele=$("<div></div>");
+	this.ele.appendTo("#box");
+	this.ele.css({left:"46%",top:-300});
+	this.ele.animate({top:0},2000);
+	this.ele.addClass("linian");
+	this.hp=1000;
+	this.speed=5;
+	this.id="LiNianOrochi";
+	this.hpBox=$("<div>HP</div>");
+	this.hpBox.appendTo("#box");
+	this.hpBox.addClass("bossHp");
+}
+HaoShen.prototype.move=function(){
+	var self=this;
+	var t=4000/this.speed;
+	var x=Math.random()*($("#box").width()-this.ele.width());
+	var y=Math.random()*($("#box").height()-this.ele.height());
+	this.ele.animate({left:x,top:y},t,"linear",function(){
+		setTimeout(function(){
+			self.move();
+		},4000)	
+	})
+}
+HaoShen.prototype.skill=function(){
+	var self=this;
+	var haojiao=setInterval(function(){
+		var x=parseInt(self.ele.css("left"))+self.ele.width()/2;
+		var y=parseInt(self.ele.css("top"))+self.ele.height()/2;
+		self.ele.css("background-image","url(img/boss"+Math.floor(Math.random()*3+1)+".png)")
+		for (var i = 0; i <15; i++) {
+	 		new Haojiao().fly(x,y);
+	 	}
+		if(self.hp<=0){
+			clearInterval(haojiao);
+		}
+	},10000)
+}
+HaoShen.prototype.boom=function(){
+	var self=this;
+	if(this.hp<=0){
+		this.ele.css("background-image","url(img/boss_die.png)");
+		this.ele.animate({top:0},3000,function(){
+			self.ele.remove();
+		})
+	}
+}
+HaoShen.prototype.showHP=function(){
+	this.hpBox.css({width:this.hp/2});
+}
 
+function Haojiao(){
+   	 this.ele=$("<div></div>");
+   	 this.ele.addClass("haojiao");
+   	 this.id=this.id=Math.random()*1000+"BT";
+   }
 
-
+   Haojiao.prototype.fly=function(x,y){
+   	var self=this;
+   	 this.ele.css({left:x,top:y});
+   	 x=x+(Math.random()+0.5)*2000-2000;
+   	 y=y+(Math.random()+0.5)*2000-2000;
+   	 this.ele.appendTo("#box");
+   	 gameEngine.bossAttack[this.id]=this;
+   	 this.ele.animate({left:x,top:y},4000,function(){ 	
+ 	 		self.ele.remove();
+ 	 		delete gameEngine.bossAttack[self.id];
+   	 })
+   }

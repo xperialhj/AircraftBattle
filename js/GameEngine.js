@@ -33,7 +33,18 @@ var gameEngine = {
 					}
 					plane.move();
 	                gameEngine.allEnemy[plane.id]=plane;
-		        },500)		
+	                if(myPlane.score>50){
+		    		   clearInterval(add);
+		    		   setTimeout(function(){
+		    		   	var boss=new HaoShen();
+		    		    boss.move();
+		    		    boss.skill();
+		    		    gameEngine.boss=boss;
+		    		   },3000)
+		    		   
+		    	    }
+		        },500)
+		    	
 	},
 	isTouch:function ($box1, $box2) {
 	  	var x1 = $box1.position().left - $box2.width()/2
@@ -53,8 +64,10 @@ var gameEngine = {
 	},
 	allBullet:{},
 	allEnemy:{},
+	boss:false,
+	bossAttack:{},
 	crashListening:function(){
-		setInterval(function(){
+		var myCarsh=setInterval(function(){
 		//判断子弹与敌机碰撞
 		for(var k in gameEngine.allBullet){
 		  for(var j in gameEngine.allEnemy){
@@ -69,16 +82,37 @@ var gameEngine = {
 					
 				}
 			 }
-		},10)
-		var myCarsh=setInterval(function(){
-			//判断本体与敌机碰撞
-			  for(var j in gameEngine.allEnemy){
+		     //判断本体与敌机碰撞
+		     for(var j in gameEngine.allEnemy){
 				if(gameEngine.isTouch(gameEngine.allEnemy[j].ele,$(".myPlane"))){
 					myPlane.boom();
 					clearInterval(myCarsh);
 				}
 			  }
+		     //boss战
+		     if(gameEngine.boss){
+		     	if(gameEngine.isTouch(gameEngine.boss.ele,$(".myPlane"))){
+					myPlane.boom();
+					clearInterval(myCarsh);
+			    }
+		     	for(var j in gameEngine.allBullet){
+				  if(gameEngine.isTouch(gameEngine.boss.ele,gameEngine.allBullet[j].ele)){
+				  	gameEngine.allBullet[k].boom();
+					gameEngine.boss.hp--;
+					gameEngine.boss.showHP();
+					gameEngine.boss.boom();
+				  }
+			    }
+		     	for(var j in gameEngine.bossAttack){
+		     	   if(gameEngine.isTouch(gameEngine.bossAttack[j].ele,$(".myPlane"))){
+					   myPlane.boom();
+					   clearInterval(myCarsh);
+			       }
+		        }
+		     }
+		     
 		},10)
+
 	},
 	showScore:function(){
 		$("#showScore").html("分数："+myPlane.score);
