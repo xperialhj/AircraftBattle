@@ -7,17 +7,19 @@
 	</head>
 	<body>
 		<div id="box"></div>
+		<div id="logo"></div>
 		<div id="showScore"></div>
 	</body>
 </html>
 <script type="text/javascript" src="js/jquery-1.11.1.js" ></script>
-<script type="text/javascript" src="js/GameEngine.js" ></script>
 <script type="text/javascript" src="js/myPlane.js" ></script>
+<script type="text/javascript" src="js/GameEngine.js" ></script>
 <script>
-	gameEngine.moveBg();
 	var myPlane=new MyPlane()
-	myPlane.start();
-	gameEngine.addEnemyPlane();
-	gameEngine.crashListening();
-	gameEngine.showScore();
+	gameEngine.loading();
+	setTimeout(function(){
+		myPlane.start();
+		gameEngine.start();
+	},4000)
+	
 </script>
