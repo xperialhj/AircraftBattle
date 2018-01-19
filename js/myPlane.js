@@ -282,6 +282,7 @@ HaoShen.prototype.boom=function(){
 		this.ele.css("background-image","url(img/boss_die.png)");
 		this.ele.animate({top:0},3000,function(){
 			self.ele.remove();
+			alert("离年宝宝溜了");
 		})
 	}
 }
