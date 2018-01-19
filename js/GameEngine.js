@@ -33,7 +33,7 @@ var gameEngine = {
 					}
 					plane.move();
 	                gameEngine.allEnemy[plane.id]=plane;
-	                if(myPlane.score>50){
+	                if(myPlane.score>=10){
 		    		   clearInterval(add);
 		    		   setTimeout(function(){
 		    		   	var boss=new HaoShen();
@@ -62,7 +62,7 @@ var gameEngine = {
 			return false;
 		}
 	},
-	allBullet:{},
+	allBullet:{length:0},
 	allEnemy:{},
 	boss:false,
 	bossAttack:{},
@@ -71,17 +71,19 @@ var gameEngine = {
 		//判断子弹与敌机碰撞
 		for(var k in gameEngine.allBullet){
 		  for(var j in gameEngine.allEnemy){
+			  	if(k=="length"){
+			  		continue;
+			  	}
 		  	    if(gameEngine.allEnemy[j]&&gameEngine.allBullet[k]){
 		  	    	if(gameEngine.isTouch(gameEngine.allEnemy[j].ele,gameEngine.allBullet[k].ele)){
 						gameEngine.allBullet[k].boom();
 						gameEngine.allEnemy[j].hp--;
 						gameEngine.allEnemy[j].boom();
-					
 					}
 		  	    }
 					
-				}
-			 }
+			}
+		 }
 		     //判断本体与敌机碰撞
 		     for(var j in gameEngine.allEnemy){
 				if(gameEngine.isTouch(gameEngine.allEnemy[j].ele,$(".myPlane"))){
@@ -96,8 +98,11 @@ var gameEngine = {
 					clearInterval(myCarsh);
 			    }
 		     	for(var j in gameEngine.allBullet){
+		     		if(j=="length"){
+			  		  continue;
+			  	    }
 				  if(gameEngine.isTouch(gameEngine.boss.ele,gameEngine.allBullet[j].ele)){
-				  	gameEngine.allBullet[k].boom();
+				  	gameEngine.allBullet[j].boom();
 					gameEngine.boss.hp--;
 					gameEngine.boss.showHP();
 					gameEngine.boss.boom();

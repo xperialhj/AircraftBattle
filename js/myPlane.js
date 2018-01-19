@@ -100,8 +100,8 @@ function Bullet(){
 		left:parseInt($(".myPlane").css("left"))+46,
 		top:parseInt($(".myPlane").css("top"))-18
     })
-	this.id=Math.random()*1000+"B";
-	//this.id="B"+gameEngine.allBullet.length++;
+	//this.id=Math.random()*1000+"B";
+	this.id="B"+gameEngine.allBullet.length++;
 }
 Bullet.prototype.move=function(){
 	var self=this;
