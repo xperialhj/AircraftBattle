@@ -33,7 +33,7 @@ var gameEngine = {
 					}
 					plane.move();
 	                gameEngine.allEnemy[plane.id]=plane;
-	                if(myPlane.score>=10){
+	                if(myPlane.score>=50){
 		    		   clearInterval(add);
 		    		   setTimeout(function(){
 		    		   	var boss=new HaoShen();

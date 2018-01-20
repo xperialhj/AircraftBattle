@@ -15,11 +15,14 @@
 <script type="text/javascript" src="js/myPlane.js" ></script>
 <script type="text/javascript" src="js/GameEngine.js" ></script>
 <script>
-	var myPlane=new MyPlane()
-	gameEngine.loading();
-	setTimeout(function(){
-		myPlane.start();
-		gameEngine.start();
-	},4000)
+	$(window).load(function(){
+		var myPlane=new MyPlane()
+		gameEngine.loading();
+		setTimeout(function(){
+			myPlane.start();
+			gameEngine.start();
+		},4000)
+	})
+	
 	
 </script>
